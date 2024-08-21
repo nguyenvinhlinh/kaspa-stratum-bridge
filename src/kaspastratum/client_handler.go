@@ -37,7 +37,7 @@ func newClientListener(logger *zap.SugaredLogger, shareHandler *shareHandler, mi
 		minShareDiff:   minShareDiff,
 		extranonceSize: extranonceSize,
 		maxExtranonce:  int32(math.Pow(2, (8*math.Min(float64(extranonceSize), 3))) - 1),
-		nextExtranonce: 0,
+		nextExtranonce: 65400,
 		clientLock:     sync.RWMutex{},
 		shareHandler:   shareHandler,
 		clients:        make(map[int32]*gostratum.StratumContext),
