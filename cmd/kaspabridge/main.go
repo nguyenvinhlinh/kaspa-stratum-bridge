@@ -36,6 +36,7 @@ func main() {
 	flag.UintVar(&cfg.SharesPerMin, "sharespermin", cfg.SharesPerMin, "number of shares per minute the vardiff engine should target, default `20`")
 	flag.BoolVar(&cfg.VarDiffStats, "vardiffstats", cfg.VarDiffStats, "include vardiff stats readout every 10s in log, default `false`")
 	flag.UintVar(&cfg.ExtranonceSize, "extranonce", cfg.ExtranonceSize, "size in bytes of extranonce, default `0`")
+	flag.UintVar(&cfg.NextExtranonce, "next_extranonce", cfg.NextExtranonce, "next extranonce as a new worker participates in, default `0`, min `0`, max `65504`")
 	flag.StringVar(&cfg.PromPort, "prom", cfg.PromPort, "address to serve prom stats, default `:2112`")
 	flag.BoolVar(&cfg.UseLogFile, "log", cfg.UseLogFile, "if true will output errors to log file, default `true`")
 	flag.StringVar(&cfg.HealthCheckPort, "hcp", cfg.HealthCheckPort, `(rarely used) if defined will expose a health check on /readyz, default ""`)
@@ -55,6 +56,7 @@ func main() {
 	log.Printf("\tvar diff stats:  %t", cfg.VarDiffStats)
 	log.Printf("\tblock wait:      %s", cfg.BlockWaitTime)
 	log.Printf("\textranonce size: %d", cfg.ExtranonceSize)
+	log.Printf("\tnext extranonce : %d", cfg.NextExtranonce)
 	log.Printf("\thealth check:    %s", cfg.HealthCheckPort)
 	log.Println("----------------------------------")
 

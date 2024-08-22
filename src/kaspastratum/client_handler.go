@@ -31,13 +31,13 @@ type clientListener struct {
 	nextExtranonce   int32
 }
 
-func newClientListener(logger *zap.SugaredLogger, shareHandler *shareHandler, minShareDiff float64, extranonceSize int8) *clientListener {
+func newClientListener(logger *zap.SugaredLogger, shareHandler *shareHandler, minShareDiff float64, extranonceSize int8, nextExtranonce int32) *clientListener {
 	return &clientListener{
 		logger:         logger,
 		minShareDiff:   minShareDiff,
 		extranonceSize: extranonceSize,
 		maxExtranonce:  int32(math.Pow(2, (8*math.Min(float64(extranonceSize), 3))) - 1),
-		nextExtranonce: 65400,
+		nextExtranonce: nextExtranonce,
 		clientLock:     sync.RWMutex{},
 		shareHandler:   shareHandler,
 		clients:        make(map[int32]*gostratum.StratumContext),

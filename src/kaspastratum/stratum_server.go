@@ -31,6 +31,7 @@ type BridgeConfig struct {
 	SharesPerMin    uint          `yaml:"shares_per_min"`
 	VarDiffStats    bool          `yaml:"var_diff_stats"`
 	ExtranonceSize  uint          `yaml:"extranonce_size"`
+	NextExtranonce  uint         `yaml:"next_extranonce"`
 	ClampPow2       bool          `yaml:"pow2_clamp"`
 }
 
@@ -97,7 +98,8 @@ func ListenAndServe(cfg BridgeConfig) error {
 	if extranonceSize > 3 {
 		extranonceSize = 3
 	}
-	clientHandler := newClientListener(logger, shareHandler, minDiff, int8(extranonceSize))
+	nextExtranonce := int32(cfg.NextExtranonce)
+	clientHandler := newClientListener(logger, shareHandler, minDiff, int8(extranonceSize), nextExtranonce)
 	handlers := gostratum.DefaultHandlers()
 	// override the submit handler with an actual useful handler
 	handlers[string(gostratum.StratumMethodSubmit)] =
