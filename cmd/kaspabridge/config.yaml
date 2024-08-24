@@ -74,6 +74,7 @@ extranonce_size: 2
 # next_extranonce: an extra-nonce which would be assign as a new miner participates in
 # min value: 0, max value: 65535
 next_extranonce: 1234
+fixed_extranonce: true
 
 # print_stats: if true will print stats to the console, false just workers
 # joining/disconnecting, blocks found, and errors will be printed

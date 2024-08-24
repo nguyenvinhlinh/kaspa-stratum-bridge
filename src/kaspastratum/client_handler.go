@@ -29,15 +29,17 @@ type clientListener struct {
 	extranonceSize   int8
 	maxExtranonce    int32
 	nextExtranonce   int32
+	fixedExtranonce  bool
 }
 
-func newClientListener(logger *zap.SugaredLogger, shareHandler *shareHandler, minShareDiff float64, extranonceSize int8, nextExtranonce int32) *clientListener {
+func newClientListener(logger *zap.SugaredLogger, shareHandler *shareHandler, minShareDiff float64, extranonceSize int8, nextExtranonce int32, fixedExtranonce bool) *clientListener {
 	return &clientListener{
 		logger:         logger,
 		minShareDiff:   minShareDiff,
 		extranonceSize: extranonceSize,
 		maxExtranonce:  int32(math.Pow(2, (8*math.Min(float64(extranonceSize), 3))) - 1),
 		nextExtranonce: nextExtranonce,
+		fixedExtranonce: fixedExtranonce,
 		clientLock:     sync.RWMutex{},
 		shareHandler:   shareHandler,
 		clients:        make(map[int32]*gostratum.StratumContext),
@@ -53,7 +55,10 @@ func (c *clientListener) OnConnect(ctx *gostratum.StratumContext) {
 	if c.extranonceSize > 0 {
 		extranonce = c.nextExtranonce
 		if c.nextExtranonce < c.maxExtranonce {
-			c.nextExtranonce++
+			if c.fixedExtranonce == false {
+				c.nextExtranonce++
+			}
+
 		} else {
 			c.nextExtranonce = 0
 			c.logger.Warn("wrapped extranonce! new clients may be duplicating work...")
